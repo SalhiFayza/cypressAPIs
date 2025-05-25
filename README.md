@@ -1,21 +1,135 @@
-# 🛡️ Library_Programming_Books_NodeJS_and_MongoDB
+# 🧪 Cypress Setup and API Testing Guide
 
-![1](https://github.com/SalhiFayza/BOOKWORM-NodeJS_and_MongoDB/assets/60444937/a59bc345-0c43-4f25-a2f9-8d0efa95e7e0)
+This guide walks you through adding **Cypress** to your Node.js/Express app and testing your API endpoints using `cypress-plugin-api`.
 
-![2](https://github.com/SalhiFayza/BOOKWORM-NodeJS_and_MongoDB/assets/60444937/8e2f62ca-e5ed-438d-9d3e-e3e00e4f3743)
+---
 
-![3](https://github.com/SalhiFayza/BOOKWORM-NodeJS_and_MongoDB/assets/60444937/0d4df990-7a74-40e0-b1af-db7a6b7f8c10)
+## 📁 Prerequisites
 
-![4](https://github.com/SalhiFayza/BOOKWORM-NodeJS_and_MongoDB/assets/60444937/8f075560-97e4-4e98-a3a8-5103e28683f7)
+Before you begin:
 
-![5](https://github.com/SalhiFayza/BOOKWORM-NodeJS_and_MongoDB/assets/60444937/f11fe806-1034-444e-b312-21344ba45444)
+* You must already have a Node.js/Express app running.
+* You should have dependencies installed (`npm install`).
 
-![6](https://github.com/SalhiFayza/BOOKWORM-NodeJS_and_MongoDB/assets/60444937/6b039bfa-6750-4cd5-a5a2-1ac2214a1a20)
+---
 
-![7](https://github.com/SalhiFayza/BOOKWORM-NodeJS_and_MongoDB/assets/60444937/9a0ff744-8c0d-4a88-900e-a1dcacd3420f)
+## ⚙️ Step 1: Open Your Project
 
+Navigate to your project directory:
 
+```bash
+cd your_project_name
+```
 
+---
 
+## 🔧 Step 2: Install Cypress
 
-https://www.canva.com/design/DAFd3F-cU3s/ZyNSEwkYI3Zi6pziIWmWUw/edit?utm_content=DAFd3F-cU3s&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+Install Cypress as a development dependency:
+
+```bash
+npm install --save-dev cypress
+```
+
+---
+
+## 🔌 Step 3: Install `cypress-plugin-api`
+
+Install the plugin to easily test REST API endpoints:
+
+```bash
+npm install --save-dev cypress-plugin-api
+```
+
+---
+
+## 📂 Step 4: Open Cypress
+
+Run Cypress to generate the required folder structure:
+
+```bash
+npx cypress open
+```
+
+This will create a `cypress/` directory with folders like:
+
+* `e2e/`
+* `support/`
+
+---
+
+## 🧩 Step 5: Configure the Plugin
+
+Edit the support file:
+
+```bash
+cypress/support/e2e.js
+```
+
+Add the following import:
+
+```js
+import 'cypress-plugin-api';
+```
+
+---
+
+## 🧪 Step 6: Create Your First API Test
+
+Create a test file:
+
+```bash
+cypress/e2e/books/postBook.cy.js
+```
+
+Paste this example test:
+
+```js
+describe('Book API Post Tests', () => {
+  it('uploads using XHR', () => {
+    cy.fixture('book-cover.jpg', 'binary')
+      .then(Cypress.Blob.binaryStringToBlob)
+      .then((blob) => {
+        const formData = new FormData();
+        formData.append('title', 'Web Testing with Cypress');
+        formData.append('description', '"Web Testing with Cypress" teaches you to test web apps on any browser or platform with zero environment setup in a developer-friendly, end-to-end web testing environment.');
+        formData.append('author', 'Lev Gelfenbuim');
+        formData.append('price', 23);
+        formData.append('userId', '682512a5120185ee92b61f15');
+        formData.append('image', blob, 'book-cover.jpg');
+        return fetch('http://localhost:3000/api/books/add', {
+          method: 'POST',
+          body: formData,
+        });
+      })
+      .then(async (res) => {
+        expect(res.status).to.eq(200);
+        const body = await res.json();
+        expect(body.message).to.eq('Book added successfully');
+        expect(body.book.title).to.eq('Web Testing with Cypress');
+      });
+  });
+});
+```
+
+---
+
+## 🚀 Step 7: Run Tests
+
+### Run with GUI:
+
+```bash
+npx cypress open
+```
+
+Select your browser and run the test.
+
+### Run headlessly:
+
+```bash
+npx cypress run
+```
+
+---
+
+You're now ready to test your API with Cypress! 🎉
