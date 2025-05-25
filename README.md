@@ -1,3 +1,4 @@
+# My app [(Video)](https://www.linkedin.com/posts/salhi-fayza-3322671a4_api-cypress-postman-activity-7330562719139418113-ieCG?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC-8bxYBGAarr81UpzU0rkF4LEFTmg5cn5w)
 # 🧪 Cypress Setup and API Testing Guide
 
 This guide walks you through adding **Cypress** to your Node.js/Express app and testing your API endpoints using `cypress-plugin-api`.
